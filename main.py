@@ -25,13 +25,21 @@ if st.button("⚙️ تحويل إلى Word", use_container_width=True):
                 temp_out_path = temp_in_path.replace(".md", ".docx")
 
                 # تشغيل Pandoc مع دعم معادلات الرياضيات
-                # tex_math_dollars يضمن تحويل الـ LaTeX إلى معادلات Word
-                subprocess.run([
-                    "pandoc", 
-                    temp_in_path, 
-                    "-o", temp_out_path, 
-                    "--from", "markdown+tex_math_dollars"
-                ], check=True)
+                # tex_math_dollars يضمن تحويل الـ LaTeX إلى معادلات 
+                # استبدل الجزء القديم بهذا:
+try:
+    # استخدام الصيغة الأبسط والأكثر استقراراً
+    subprocess.run([
+        "pandoc", 
+        temp_in_path, 
+        "-o", temp_out_path,
+        "--from", "markdown",
+        "--to", "docx"
+    ], check=True)
+except Exception as e:
+    # محاولة ثانية بصيغة بديلة في حال فشل الأولى
+    subprocess.run(f"pandoc {temp_in_path} -o {temp_out_path}", shell=True, check=True)
+
 
                 # قراءة الملف الناتج للتحميل
                 with open(temp_out_path, "rb") as file:
